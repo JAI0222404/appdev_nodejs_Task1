@@ -3,15 +3,15 @@ const fs = require('fs');
 const path = require('path');
 const formidable = require('formidable');
 
-const allowedExtensions = ['.png', '.jpg', '.jpeg', '.gif', '.txt', '.pdf'];
+const allowedExtensions = ['.png']; // Only allow PNG files
 
 const server = http.createServer(async (req, res) => {
-  // Dynamically import mime since it's an ES module now
+  // Dynamic import of mime because it's ESM-only now
   const mime = await import('mime');
 
   if (req.method === 'GET') {
     if (req.url === '/') {
-      // Serve HTML form with CSS link
+      // Serve HTML form with CSS
       res.writeHead(200, { 'Content-Type': 'text/html' });
       res.end(`
         <!DOCTYPE html>
@@ -19,13 +19,13 @@ const server = http.createServer(async (req, res) => {
         <head>
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <title>File Upload</title>
+          <title>PNG File Upload</title>
           <link rel="stylesheet" href="/style.css" />
         </head>
         <body>
-          <h1>Upload a File</h1>
+          <h1>Upload a PNG File</h1>
           <form action="/upload" method="post" enctype="multipart/form-data">
-            <input type="file" name="myfile" required />
+            <input type="file" name="myfile" accept=".png" required />
             <button type="submit">Upload</button>
           </form>
         </body>
@@ -72,7 +72,7 @@ const server = http.createServer(async (req, res) => {
       if (!allowedExtensions.includes(ext)) {
         fs.unlink(uploadedFile.path, () => {});
         res.writeHead(400, { 'Content-Type': 'text/html' });
-        res.end(`<h1>Invalid file type: ${ext}</h1><p>Allowed: ${allowedExtensions.join(', ')}</p>`);
+        res.end(`<h1>Invalid file type: ${ext}</h1><p>Only PNG files are allowed.</p>`);
         return;
       }
 
@@ -87,7 +87,7 @@ const server = http.createServer(async (req, res) => {
         res.end(`
           <h1>File uploaded successfully!</h1>
           <p>Saved as: ${uploadedFile.name}</p>
-          <a href="/">Upload another file</a>
+          <a href="/">Upload another PNG file</a>
         `);
       });
     });
