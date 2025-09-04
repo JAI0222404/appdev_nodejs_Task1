@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Node.js File Server</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>File Upload</title>
+  <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-<h1>Welcome to the Node.js File Server</h1>
+  <h1>Upload a File</h1>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="myfile" required />
+    <button type="submit">Upload</button>
+  </form>
 </body>
 </html>
